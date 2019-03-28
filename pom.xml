@@ -33,6 +33,22 @@
 			<artifactId>gdx-backend-lwjgl</artifactId>
 			<version>1.9.9</version>
 		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers</artifactId>
+			<version>1.9.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers-desktop</artifactId>
+			<version>1.9.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers-platform</artifactId>
+			<version>1.9.9</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
 	</dependencies>
 
 </project>
