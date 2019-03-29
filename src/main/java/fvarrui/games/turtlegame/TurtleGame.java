@@ -2,11 +2,20 @@ package fvarrui.games.turtlegame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class TurtleGame extends Game {
+	
+	private int score = 0;
+	
+	private Sound winSound;
+	private Sound eatSound;
+	private Music wavesAmbient;
 
 	private Stage stage;
 	private Ocean ocean;
@@ -15,6 +24,15 @@ public class TurtleGame extends Game {
 	private WinMessage winMessage;
 
 	public void create() {
+		
+		wavesAmbient = Gdx.audio.newMusic(Gdx.files.internal("assets/ocean-waves.ogg"));
+		wavesAmbient.setVolume(0.25f);
+		wavesAmbient.setLooping(true);
+		wavesAmbient.play();
+		
+		eatSound = Gdx.audio.newSound(Gdx.files.internal("assets/eat.ogg"));
+
+		winSound = Gdx.audio.newSound(Gdx.files.internal("assets/win.ogg"));
 
 		ocean = new Ocean();
 
@@ -57,9 +75,16 @@ public class TurtleGame extends Game {
 
 	private void checkCollisions() {
 		// check if turtle eats starfish
-		if (turtle.overlaps(starfish)) {
-			starfish.remove();
-			winMessage.setVisible(true);
+		if (!winMessage.isVisible() && turtle.overlaps(starfish)) {
+			eatSound.play();
+			score++;
+			if (score >= 10) {
+				starfish.remove();
+				winMessage.setVisible(true);
+				winSound.play();
+			} else {
+				starfish.setPosition((float) (Math.random() * (Gdx.graphics.getWidth() - starfish.getWidth())), (float)(Math.random() * (Gdx.graphics.getHeight() - starfish.getHeight())));
+			}
 		}
 
 		// check if turtle goes out of screen on horizontal axis
@@ -77,7 +102,15 @@ public class TurtleGame extends Game {
 
 	public static void main(String[] args) {
 		Game game = new TurtleGame();
-		new LwjglApplication(game, "Turtle Game", 640, 480);
+		
+        LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+        cfg.title = "Turtle Game";
+        cfg.width = 800;
+        cfg.height = 600;
+        cfg.resizable = false;
+        cfg.fullscreen = true;
+        
+		new LwjglApplication(game, cfg);
 	}
 
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Ocean extends TexturedActor {
 	
 	public Ocean() {
-		super(new Texture(Gdx.files.internal("assets/water.jpg")));
+		super(new Texture(Gdx.files.internal("assets/water-border.jpg")));
 	}
 
 }
