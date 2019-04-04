@@ -1,7 +1,12 @@
-package fvarrui.games.turtlegame;
+package fvarrui.games.turtlegame.utils;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import fvarrui.games.turtlegame.actors.Plant;
+import fvarrui.games.turtlegame.actors.Rock;
+import fvarrui.games.turtlegame.actors.Starfish;
+import fvarrui.games.turtlegame.actors.TexturedActor;
 
 public class ItemFactory {
 
@@ -27,7 +32,6 @@ public class ItemFactory {
 		}
 
 		if (actor != null) {
-			System.out.println(name + " texture=" + tile.getTextureRegion().getRegionX() + "," + tile.getTextureRegion().getRegionY());
 			actor.setPosition(x, y);
 			actor.setTexture(tile.getTextureRegion());
 		}

@@ -1,4 +1,4 @@
-package fvarrui.games.turtlegame;
+package fvarrui.games.turtlegame.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -28,6 +28,7 @@ public class TextActor extends BaseActor {
 			parameter.shadowOffsetY = 5;
 		}
 		font = generator.generateFont(parameter);
+		generator.dispose();
 		setText("");
 	}
 

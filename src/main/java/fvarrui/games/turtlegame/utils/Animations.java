@@ -1,4 +1,4 @@
-package fvarrui.games.turtlegame;
+package fvarrui.games.turtlegame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

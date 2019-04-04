@@ -1,4 +1,4 @@
-package fvarrui.games.turtlegame;
+package fvarrui.games.turtlegame.actors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import fvarrui.games.turtlegame.utils.ItemFactory;
 
 public class Ocean extends Actor {
 	
@@ -36,10 +38,10 @@ public class Ocean extends Actor {
 	
 	public Vector2 startPosition;
 
-	public Ocean() {
+	public Ocean(String mapFile) {
 		
 		// set up tile map, renderer, and camera
-		map = new TmxMapLoader().load("assets/map.tmx");
+		map = new TmxMapLoader().load(mapFile);
 		
 		int tileWidth = (int) map.getProperties().get("tilewidth");
 		int tileHeight = (int) map.getProperties().get("tileheight");

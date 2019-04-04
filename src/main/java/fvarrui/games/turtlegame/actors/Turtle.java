@@ -1,4 +1,4 @@
-package fvarrui.games.turtlegame;
+package fvarrui.games.turtlegame.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import fvarrui.games.turtlegame.controller.Gamepad;
 import fvarrui.games.turtlegame.controller.PS4GamepadCodes;
+import fvarrui.games.turtlegame.utils.Animations;
 
 public class Turtle extends AnimatedActor {
 	
