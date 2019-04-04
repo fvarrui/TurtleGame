@@ -1,33 +1,27 @@
 package fvarrui.games.turtlegame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class TexturedActor extends Actor {
+public class TexturedActor extends BaseActor {
 
-	private TextureRegion texture = new TextureRegion();
+	private TextureRegion texture;
 
 	public TexturedActor(Texture texture) {
 		super();
-		setTexture(texture);
+		setTexture(new TextureRegion(texture));
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture.setRegion(texture);
-		setSize(texture.getWidth(), texture.getHeight());
-		setOrigin(texture.getWidth() / 2, texture.getHeight() / 2);
+	public TexturedActor(TextureRegion textureRegion) {
+		super();
+		setTexture(textureRegion);
 	}
 
-	public Rectangle getBounds() {
-		return new Rectangle(getX(), getY(), getWidth(), getHeight());
-	}
-
-	public boolean overlaps(TexturedActor actor) {
-		return this.getBounds().overlaps(actor.getBounds());
+	public void setTexture(TextureRegion texture) {
+		this.texture = texture;
+		setSize(texture.getRegionWidth(), texture.getRegionHeight());
+		setOrigin(texture.getRegionWidth() / 2, texture.getRegionHeight() / 2);
 	}
 
 	public void draw(Batch batch, float parentAlpha) {
@@ -43,10 +37,6 @@ public class TexturedActor extends Actor {
 					getRotation()
 				);
 		}
-	}
-	
-	public void center() {
-		setPosition((Gdx.graphics.getWidth() - getWidth()) / 2, (Gdx.graphics.getHeight() - getHeight()) / 2);
 	}
 
 }

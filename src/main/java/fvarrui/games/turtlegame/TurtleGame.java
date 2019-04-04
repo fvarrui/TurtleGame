@@ -1,5 +1,8 @@
 package fvarrui.games.turtlegame;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -8,19 +11,21 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 
 public class TurtleGame extends Game {
-	
-	private int score = 0;
 	
 	private Sound winSound;
 	private Sound eatSound;
 	private Music wavesAmbient;
 
-	private Stage stage;
+	private Stage gameStage;
+	private Stage hudStage;
+	
+	private FPS fps;
+	private Score score;
 	private Ocean ocean;
 	private Turtle turtle;
-	private Starfish starfish;
 	private WinMessage winMessage;
 
 	public void create() {
@@ -33,80 +38,117 @@ public class TurtleGame extends Game {
 		eatSound = Gdx.audio.newSound(Gdx.files.internal("assets/eat.ogg"));
 
 		winSound = Gdx.audio.newSound(Gdx.files.internal("assets/win.ogg"));
-
+		
 		ocean = new Ocean();
 
 		turtle = new Turtle();
-		turtle.setPosition(20, 20);
-
-		starfish = new Starfish();
-		starfish.setPosition(380, 380);
+		turtle.setPosition(ocean.startPosition.x, ocean.startPosition.y);
+//		turtle.setShowBounds(true);
 
 		winMessage = new WinMessage();
 		winMessage.setVisible(false);
+		
+		score = new Score();
+		score.setPosition(10, Ocean.windowHeight - 10, Align.top);
+		
+		fps = new FPS();
+		fps.setPosition(Ocean.windowWidth - 200, Ocean.windowHeight - 10, Align.topRight);
 
-		stage = new Stage();
-		stage.addActor(ocean);
-		stage.addActor(turtle);
-		stage.addActor(starfish);
-		stage.addActor(winMessage);
+		gameStage = new Stage();
+		gameStage.addActor(ocean);
+		
+		ocean.getStarfish().stream().forEach(starfish -> {
+			gameStage.addActor(starfish);
+		});
+		
+		ocean.getRocks().stream().forEach(rock -> {
+			gameStage.addActor(rock);
+		});
+		
+		ocean.getPlants().stream().forEach(plant -> {
+			gameStage.addActor(plant);
+		});
+		
+		gameStage.addActor(turtle);
+
+		
+		hudStage = new Stage();
+		hudStage.addActor(score);
+		hudStage.addActor(fps);
+		hudStage.addActor(winMessage);
 
 	}
 
 	@Override
 	public void render() {
-
+	
 		// check user input
-		stage.act();
+		gameStage.act();
+		hudStage.act();
 
-		checkCollisions();
-
-		clearScreen();
+		update();
 
 		// draw graphics
-		stage.draw();
-
+		clearScreen();
+		gameStage.draw();
+		hudStage.draw();
+		
 	}
 
+	// clear screen with black color
 	private void clearScreen() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 
-	private void checkCollisions() {
+	private void update() {
+		
 		// check if turtle eats starfish
-		if (!winMessage.isVisible() && turtle.overlaps(starfish)) {
-			eatSound.play();
-			score++;
-			if (score >= 10) {
-				starfish.remove();
-				winMessage.setVisible(true);
-				winSound.play();
-			} else {
-				starfish.setPosition((float) (Math.random() * (Gdx.graphics.getWidth() - starfish.getWidth())), (float)(Math.random() * (Gdx.graphics.getHeight() - starfish.getHeight())));
-			}
+		if (!winMessage.isVisible()) {
+			
+			List<Starfish> removed = new ArrayList<>();
+			ocean.getStarfish().stream().filter(starfish -> starfish.overlaps(turtle)).forEach(starfish -> {
+				eatSound.play();
+				score.increase();
+				starfish.remove();	
+				removed.add(starfish);
+				if (score.getScore() >= 10) {
+					winMessage.setVisible(true);
+					winSound.play();
+				}
+			});
+			ocean.getStarfish().removeAll(removed);
+
 		}
+		
+		// check if turtle hits a rock or a plant
+		ocean.getRocks().stream().filter(rock -> rock.overlaps(turtle)).forEach(rock -> turtle.undo());
 
 		// check if turtle goes out of screen on horizontal axis
-		if (turtle.getX() + turtle.getWidth() < 0)
-			turtle.setX(Gdx.graphics.getWidth());
-		else if (turtle.getX() > Gdx.graphics.getWidth())
-			turtle.setX(-turtle.getWidth());
+		if (turtle.getX() < 0)
+			turtle.setX(0);
+		else if (turtle.getX() + turtle.getWidth() > ocean.getWidth())
+			turtle.setX(ocean.getWidth() - turtle.getWidth());
 
 		// check if turtle goes out of screen on vertical axis
-		if (turtle.getY() + turtle.getHeight() < 0)
-			turtle.setY(Gdx.graphics.getHeight());
-		else if (turtle.getY() > Gdx.graphics.getHeight())
-			turtle.setY(-turtle.getHeight());
+		if (turtle.getY() < 0)
+			turtle.setY(0);
+		else if (turtle.getY() + turtle.getHeight() > ocean.getHeight())
+			turtle.setY(ocean.getHeight() - turtle.getHeight());
+		
+		// center camera on turtle actor
+		gameStage.getCamera().position.x = turtle.getX() + turtle.getOriginX();
+		gameStage.getCamera().position.y = turtle.getY() + turtle.getOriginY();
+
 	}
 
 	public static void main(String[] args) {
-		Game game = new TurtleGame();
+		TurtleGame game = new TurtleGame();
 		
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Turtle Game";
-        cfg.width = 800;
-        cfg.height = 600;
+        cfg.width = Ocean.windowWidth;
+        cfg.height = Ocean.windowHeight;
         cfg.resizable = false;
         cfg.fullscreen = true;
         

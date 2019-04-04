@@ -2,16 +2,25 @@ package fvarrui.games.turtlegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 import fvarrui.games.turtlegame.controller.Gamepad;
 import fvarrui.games.turtlegame.controller.PS4GamepadCodes;
 
-public class Turtle extends TexturedActor {
+public class Turtle extends AnimatedActor {
+	
+	private Vector2 oldPosition = new Vector2();
+	private float oldAngle = 0f;
 
 	public Turtle() {
-		super(new Texture(Gdx.files.internal("assets/turtle-1.png")));
+		super(Animations.loadFromFiles(0.05f, true, new String [] { 
+				"assets/turtle-1.png", 
+				"assets/turtle-2.png",
+				"assets/turtle-3.png", 
+				"assets/turtle-4.png", 
+				"assets/turtle-5.png", 
+				"assets/turtle-6.png" 
+				}));
 	}
 
 	@Override
@@ -20,6 +29,9 @@ public class Turtle extends TexturedActor {
 
 		float velocity = 0f;
 		float rotation = getRotation();
+
+		oldAngle = getRotation();
+		oldPosition.set(getX(), getY());
 
 		// check keyboard input
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -55,8 +67,17 @@ public class Turtle extends TexturedActor {
 		Vector2 direction = new Vector2(Vector2.X);
 		direction.setLength(velocity);
 		direction.setAngle(rotation);
-
+		
+		if (velocity != 0f) play();
+		else pause();
+		
 		moveBy(direction.x, direction.y);
+		
+	}
+	
+	public void undo() {
+		setPosition(oldPosition.x, oldPosition.y);
+		setRotation(oldAngle);
 	}
 
 }

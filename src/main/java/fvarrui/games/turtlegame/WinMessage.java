@@ -1,12 +1,10 @@
 package fvarrui.games.turtlegame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
-public class WinMessage extends TexturedActor {
+public class WinMessage extends TextActor {
 	
 	public WinMessage() {
-		super(new Texture(Gdx.files.internal("assets/you-win.png")));
+		super("assets/deltaphoenixchromeital.ttf", 120, true);
+		setText("Ganaste");
 		center();
 	}
 
