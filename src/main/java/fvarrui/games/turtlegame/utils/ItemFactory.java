@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import fvarrui.games.turtlegame.actors.Plant;
 import fvarrui.games.turtlegame.actors.Rock;
 import fvarrui.games.turtlegame.actors.Starfish;
-import fvarrui.games.turtlegame.actors.TexturedActor;
 
 public class ItemFactory {
 

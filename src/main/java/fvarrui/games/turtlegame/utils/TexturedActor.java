@@ -1,4 +1,4 @@
-package fvarrui.games.turtlegame.actors;
+package fvarrui.games.turtlegame.utils;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,10 +7,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class TexturedActor extends BaseActor {
 
 	private TextureRegion texture;
+	
+	public TexturedActor(String texturePath) {
+		this(new Texture(texturePath));
+	}
 
 	public TexturedActor(Texture texture) {
-		super();
-		setTexture(new TextureRegion(texture));
+		this(new TextureRegion(texture));
 	}
 
 	public TexturedActor(TextureRegion textureRegion) {

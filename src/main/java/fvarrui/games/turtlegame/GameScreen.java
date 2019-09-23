@@ -21,8 +21,6 @@ import fvarrui.games.turtlegame.actors.WinMessage;
 
 public class GameScreen implements Screen {
 	
-	private Game game;
-	
 	private Sound winSound;
 	private Sound eatSound;
 	private Music wavesAmbient;
@@ -37,7 +35,6 @@ public class GameScreen implements Screen {
 	private WinMessage winMessage;
 	
 	public GameScreen(Game game) {
-		this.game = game;
 
 		// init ambient sound
 		wavesAmbient = Gdx.audio.newMusic(Gdx.files.internal("assets/ocean-waves.ogg"));

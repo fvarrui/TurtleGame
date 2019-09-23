@@ -1,5 +1,7 @@
 package fvarrui.games.turtlegame.actors;
 
+import fvarrui.games.turtlegame.utils.TextActor;
+
 public class FPS extends TextActor {
 	
 	private float elapsedTime = 0f;

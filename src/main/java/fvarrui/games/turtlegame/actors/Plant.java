@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import fvarrui.games.turtlegame.utils.TexturedActor;
+
 public class Plant extends TexturedActor {
 	
 	public Plant() {

@@ -1,5 +1,7 @@
 package fvarrui.games.turtlegame.actors;
 
+import fvarrui.games.turtlegame.utils.TextActor;
+
 public class WinMessage extends TextActor {
 	
 	public WinMessage() {

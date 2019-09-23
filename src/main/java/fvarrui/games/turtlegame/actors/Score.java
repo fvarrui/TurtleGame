@@ -1,5 +1,7 @@
 package fvarrui.games.turtlegame.actors;
 
+import fvarrui.games.turtlegame.utils.TextActor;
+
 public class Score extends TextActor {
 	
 	private int score;

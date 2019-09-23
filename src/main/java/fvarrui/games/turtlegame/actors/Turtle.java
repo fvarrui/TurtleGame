@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import fvarrui.games.turtlegame.controller.Gamepad;
 import fvarrui.games.turtlegame.controller.PS4GamepadCodes;
+import fvarrui.games.turtlegame.utils.AnimatedActor;
 import fvarrui.games.turtlegame.utils.Animations;
 
 public class Turtle extends AnimatedActor {
